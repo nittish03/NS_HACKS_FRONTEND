@@ -1,23 +1,49 @@
 import React,{useState} from 'react'
-
+import toast from 'react-hot-toast'
+import axios from "axios";
 
 
 
 
 export default function Upload() {
 
+	const [file, setFile] = useState(null);
 
+	const handleFileChange = (event) => {
+	  setFile(event.target.files[0]);
+	};
+  
 
-
-
-
-	const [file,setFile] = useState("")
-
-
-
-
-
+	const handleSubmit = async (event) => {
+	  event.preventDefault();
 	
+	  if (!file) {
+		toast.error("Please select a file to upload.");
+		return;
+	  }
+	
+	  const formData = new FormData();
+	  formData.append("file", file);
+	
+	  const loading = toast.loading("Uploading...");
+	  try {
+		const response = await axios.post("http://localhost:8000/upload", formData, {
+		  headers: {
+			"Content-Type": "multipart/form-data",
+		  },
+		});
+	
+		console.log(response.data);
+		toast.dismiss(loading);
+		toast.success("File uploaded successfully.");
+	  } catch (error) {
+		console.error("Error uploading file:", error);
+		toast.dismiss(loading);
+		toast.error("Error uploading file.");
+	  }
+	};
+	
+  
 	return (
 		<div className="container mx-auto p-6">
 			{/* Header */}
@@ -34,22 +60,31 @@ export default function Upload() {
 					Upload a New Document
 				</h2>
 				<form
-					id="upload-form"
-					className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"
-				>
-					<input
-						type="file"
-						id="file-input"
-						className="block w-full sm:w-auto text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
-						accept=".pdf,.jpg,.jpeg,.png"
-					/>
-					<button
-						type="submit"
-						className="py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-					>
-						Upload
-					</button>
-				</form>
+        onSubmit={handleSubmit}
+        className="p-6 bg-white rounded-lg shadow-md max-w-lg mx-auto"
+      >
+        <div className="mb-4">
+          <label
+            htmlFor="file"
+            className="block text-gray-700 font-medium mb-2"
+          >
+            Select a file:
+          </label>
+          <input
+            type="file"
+            id="file"
+            name="file"
+            onChange={handleFileChange}
+            className="block w-full text-gray-700 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+        >
+          Upload
+        </button>
+      </form>
 			</section>
 
 			{/* Search Bar */}
