@@ -13,7 +13,7 @@ function App() {
     <Navbar/>
 <Routes>
 <Route path='/' element={<Qrcode/>}/>
-<Route path='/image' element={<ImageGenerator/>}/>
+
 </Routes>
     </>
   )
