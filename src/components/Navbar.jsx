@@ -1,99 +1,135 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+
 const Navbar = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
-    <div>
-        <nav className="bg-gray-800">
-  <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    <div className="relative flex h-16 items-center justify-between">
-      <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-
-
-
-        <button type="button" className="relative inline-flex  items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset" aria-controls="mobile-menu" aria-expanded="false">
-          <span className="absolute -inset-0.5"></span>
-          <span className="sr-only">Open main menu</span>
-
-
-
-          <svg className="block size-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-          </svg>
-
-
-
-          <svg className="hidden size-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-      <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-        <div className="flex shrink-0 items-center">
-          <img className="h-8 w-auto" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company"/>
-        </div>
-        <div className="hidden sm:ml-6 sm:block">
-          <div className="flex space-x-4">
-
-
-            <NavLink to="/" className="rounded-md active:red px-3 py-2 text-sm font-medium hover:bg-gray-700 text-white" aria-current="page" >Qr-Code</NavLink>
-            <NavLink to="/image" className="rounded-md px-3 active:red py-2 text-sm font-medium hover:bg-gray-700 text-white" aria-current="page" >Image-Generator</NavLink>
-            <NavLink to="https://www.instagram.com/nittish_baboria"    target='_blank' className="rounded-md px-3 active:red py-2 text-sm font-medium hover:bg-gray-700 text-white" aria-current="page" >Nittish Instagram</NavLink>
-            <NavLink to="https://www.linkedin.com/in/nittish-baboria"  target='_blank' className="rounded-md px-3 active:red py-2 text-sm font-medium hover:bg-gray-700 text-white" aria-current="page" >Nittish Linked in</NavLink>
-            <NavLink to="https://nittish-portfolio.netlify.app/"                 target='_blank' className="rounded-md px-3 active:red py-2 text-sm font-medium hover:bg-gray-700 text-white" aria-current="page" >Nittish Portfolio</NavLink>
-
+    <nav className="bg-gray-800">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          {/* Logo Section */}
+          <div className="flex items-center">
+            <img
+              className="h-8 w-auto"
+              src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
+              alt="Your Company"
+            />
           </div>
-        </div>
-      </div>
-      <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-        <button type="button" className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
-          <span className="absolute -inset-1.5"></span>
-          <span className="sr-only">View notifications</span>
-          <svg className="size-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
-          </svg>
-        </button>
 
+          {/* Desktop Menu */}
+          <div className="hidden sm:flex sm:space-x-4">
+            <NavLink
+              to="/"
+              className="rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-gray-700 hover:transition hover:duration-200"
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to="/2"
+              className="rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-gray-700 hover:transition hover:duration-200"
+            >
+              Second
+            </NavLink>
+          </div>
 
-        <div className="relative ml-3">
-          <div>
-            <button type="button" className="relative flex rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-              <span className="absolute -inset-1.5"></span>
-              <span className="sr-only">Open user menu</span>
-              <img className="size-8 rounded-full" src="https://avatars.githubusercontent.com/u/137718877?s=400&u=059ef6bb2f532986f496f6ac7dbe45bfbfe4e04e&v=4" alt=""/>
+          {/* Mobile Menu Button */}
+          <div className="sm:hidden">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white transition duration-200"
+              aria-controls="mobile-menu"
+              aria-expanded={isMobileMenuOpen}
+            >
+              <span className="sr-only">Open main menu</span>
+              {isMobileMenuOpen ? (
+                <svg
+                  className="h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  className="h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16m-7 6h7"
+                  />
+                </svg>
+              )}
             </button>
           </div>
 
-
-
-          {/* <div className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-
-            <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-            <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
-            <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
-          </div> */}
+          {/* Notification and Profile */}
+          <div className="hidden sm:flex items-center space-x-4">
+            <button
+              type="button"
+              className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 transition duration-200"
+            >
+              <span className="sr-only">View notifications</span>
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
+                />
+              </svg>
+            </button>
+            <img
+              className="h-8 w-8 rounded-full"
+              src="https://avatars.githubusercontent.com/u/137718877?s=400&u=059ef6bb2f532986f496f6ac7dbe45bfbfe4e04e&v=4"
+              alt="User"
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </div>
 
+      {/* Mobile Menu */}
+      <div
+        className={`sm:hidden transform transition-all duration-300 ${
+          isMobileMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+        } overflow-hidden`}
+        id="mobile-menu"
+      >
+        <div className="space-y-1 px-2 pt-2 pb-3">
+          <NavLink
+            to="/"
+            className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-gray-700 hover:transition hover:duration-200"
+          >
+            Home
+          </NavLink>
+          <NavLink
+            to="/2"
+            className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-gray-700 hover:transition hover:duration-200"
+          >
+            Second
+          </NavLink>
+        </div>
+      </div>
+    </nav>
+  );
+};
 
-
-  <div className="sm:hidden" id="mobile-menu">
-    <div className="space-y-1 px-2 pt-2 pb-3">
-
-      <NavLink to="/" className="block active:red rounded-md  px-3 py-2 text-base font-medium text-white hover:bg-gray-700" aria-current="page" >Qr-Code</NavLink>
-      <NavLink to="/image" className="block active:red rounded-md  px-3 py-2 text-base font-medium text-white hover:bg-gray-700"  aria-current="page" >Image-Generator</NavLink>
-      <NavLink to="https://www.instagram.com/nittish_baboria"   target='_blank'     className="block active:red rounded-md  px-3 py-2 text-base font-medium text-white hover:bg-gray-700"  aria-current="page" >Nittish-Instagram</NavLink>
-      <NavLink to="https://www.linkedin.com/in/nittish-baboria" target='_blank'    className="block active:red rounded-md  px-3 py-2 text-base font-medium text-white hover:bg-gray-700"  aria-current="page" >Nittish-Linked in</NavLink>
-      <NavLink to="https://github.com/nittish03"                target='_blank'     className="block active:red rounded-md  px-3 py-2 text-base font-medium text-white hover:bg-gray-700"  aria-current="page" >Nittish-Github</NavLink>
-      <NavLink to="https://nittish-portfolio.netlify.app/"                target='_blank'     className="block active:red rounded-md  px-3 py-2 text-base font-medium text-white hover:bg-gray-700"  aria-current="page" >Nittish-Portfolio</NavLink>
-
-    </div>
-  </div>
-</nav>
-
-    </div>
-  )
-}
-
-export default Navbar
+export default Navbar;
