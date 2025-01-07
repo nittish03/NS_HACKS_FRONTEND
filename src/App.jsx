@@ -11,7 +11,7 @@ function App() {
 			<Navbar />
 			<Routes>
 				{/* <Route path="/" element={<Qrcode />} /> */}
-				<Route path="/" element={<UploadPage />} />
+				<Route path="/" element={< UploadPage />} />
 			</Routes>
 		</>
 	);
