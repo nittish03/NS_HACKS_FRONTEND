@@ -12,8 +12,8 @@ const Navbar = () => {
           <div className="flex items-center">
             <img
               className="h-8 w-auto"
-              src="public/vite.svg"
-              alt="Your Company"
+              src="public/AlphBotsLogo.png"
+              alt="AlphaBots"
             />
           </div>
 
