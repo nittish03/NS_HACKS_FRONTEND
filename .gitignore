@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Can use later...
+Login.jsx
+Signup.jsx
+footer
+header
