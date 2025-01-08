@@ -11,10 +11,11 @@ export default function Home() {
 
 				<header className="mb-6">
 					<h1 className="text-4xl font-bold text-gray-800">
-						Welcome to Invoice Processor
+						Welcome to Invoice Processor Tool
 					</h1>
 					<p className="text-gray-600 mt-2">
-						Your one-stop solution for managing invoices and documents.
+						Your one-stop solution for managing invoices and documents. <br />
+						Prepared by Team AlphaBots
 					</p>
 				</header>
 
