@@ -18,6 +18,11 @@ export default function Upload() {
     getAllPdfs();
   }, [file,title,allPdfs]);
 
+  const showPdf = (pdf) =>{
+    window.open(`${import.meta.env.VITE_BASE_URL}/uploads/${pdf}`,"_blank","noreferrer")
+  }
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -146,11 +151,10 @@ export default function Upload() {
                       <button
                         className="px-2 py-1 text-sm font-medium text-gray-800 bg-white border border-gray-300 rounded-md hover:bg-gray-100 hover:text-gray-800"
                         onClick={() => {
-                          // handle download
-                          console.log("Download:", e._id);
+                          showPdf(e.pdf)
                         }}
                       >
-                        Download
+                        Show Pdf
                       </button>
                     </td>
                   </tr>
