@@ -33,7 +33,7 @@ export default function Upload() {
     const loading = toast.loading("Uploading...");
     try {
       const response = await axios.post(
-        "http://localhost:8000/upload",
+        `${import.meta.env.VITE_BASE_URL}/upload`,
         formData,
         {
           headers: {
