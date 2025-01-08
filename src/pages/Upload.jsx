@@ -8,7 +8,7 @@ import axios from "axios";
 export default function Upload() {
 
 	const [file, setFile] = useState(null);
-
+	const [formData,setFormData] = useState(null);
 	const handleFileChange = (event) => {
 	  setFile(event.target.files[0]);
 	};
@@ -24,7 +24,8 @@ export default function Upload() {
 	
 	  const formData = new FormData();
 	  formData.append("file", file);
-	
+	  
+	  setFormData(formData);
 	  const loading = toast.loading("Uploading...");
 	  try {
 		const response = await axios.post("http://localhost:8000/upload", formData, {
