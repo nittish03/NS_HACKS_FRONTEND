@@ -76,6 +76,7 @@ export default function Upload() {
             id="file"
             name="file"
             onChange={handleFileChange}
+			accept=".pdf,.jpg,.jpeg,.png"
             className="block w-full text-gray-700 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
