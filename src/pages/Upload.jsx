@@ -9,6 +9,7 @@ export default function Upload() {
   const [searchTerm, setSearchTerm] = useState(""); // For search functionality
   const [filteredPdfs, setFilteredPdfs] = useState([]);
 
+<<<<<<< HEAD
   useEffect(() => {
     const getAllPdfs = async () => {
       try {
@@ -24,6 +25,79 @@ export default function Upload() {
     };
     getAllPdfs();
   }, [allPdfs,title,file]);
+=======
+	// document.getElementById("upload-form").addEventListener("submit", (e) => {
+	// 	e.preventDefault();
+
+	// 	const fileInput = document.getElementById("file-input");
+	// 	const file = fileInput.files[0];
+
+	// 	if (!file) {
+	// 		alert("Please select a file to upload.");
+	// 		return;
+	// 	}
+
+	// 	// Simulate an API call to upload the file
+	// 	const newDocument = {
+	// 		name: file.name,
+	// 		type: file.type || "Unknown",
+	// 		date: new Date().toLocaleDateString(),
+	// 	};
+
+	// 	// Add the new document to the list
+	// 	addDocumentRow(newDocument);
+
+	// 	// Reset the file input
+	// 	fileInput.value = "";
+	// });
+	const documents = [
+		{ name: "Invoice_2023.pdf", type: "PDF", date: "01/01/2023" },
+		{ name: "Report_Q1.png", type: "Image", date: "02/15/2023" },
+	];
+
+	const documentRows = document.getElementById("document-rows");
+
+	function addDocumentRow(doc) {
+		const row = document.createElement("tr");
+		row.classList.add("border-b");
+
+		row.innerHTML = `
+    <td class="py-2">${doc.name}</td>
+    <td class="py-2">${doc.type}</td>
+    <td class="py-2">${doc.date}</td>
+    <td class="py-2">
+    <button class="text-blue-500 hover:underline" onclick="viewDocument('${doc.name}')">View</button>
+    <button class="text-green-500 hover:underline ml-2" onclick="downloadDocument('${doc.name}')">Download</button>
+    <button class="text-red-500 hover:underline ml-2" onclick="deleteDocument(this)">Delete</button>
+    </td>
+`;
+
+		// documentRows.appendChild(row);
+	}
+
+	// Add initial documents
+	documents.forEach(addDocumentRow);
+
+	function viewDocument(name) {
+		alert(`Viewing ${name}`);
+	}
+
+	function downloadDocument(name) {
+		alert(`Downloading ${name}`);
+	}
+
+	function deleteDocument(button) {
+		const row = button.parentElement.parentElement;
+		row.remove();
+	}
+
+	const [file, setFile] = useState(null);
+	const [formData,setFormData] = useState(null);
+	const handleFileChange = (event) => {
+	  setFile(event.target.files[0]);
+	};
+  
+>>>>>>> c691208 ( pages added)
 
   useEffect(() => {
     const filtered = allPdfs.filter((pdf) =>
