@@ -3,25 +3,42 @@ import toast from "react-hot-toast";
 import axios from "axios";
 
 export default function Upload() {
-  const [file, setFile] = useState(null); //main
+  const [file, setFile] = useState(null); // Main
   const [title, setTitle] = useState("");
   const [allPdfs, setAllPdfs] = useState([]);
-
- 
-
+  const [searchTerm, setSearchTerm] = useState(""); // For search functionality
+  const [filteredPdfs, setFilteredPdfs] = useState([]);
 
   useEffect(() => {
     const getAllPdfs = async () => {
-      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/get-uploads`);
-      setAllPdfs(response.data.data);
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/get-uploads`
+        );
+        setAllPdfs(response.data.data);
+        setFilteredPdfs(response.data.data);
+      } catch (error) {
+        console.error("Error fetching PDFs:", error);
+        toast.error("Failed to fetch documents.");
+      }
     };
     getAllPdfs();
-  }, [file,title,allPdfs]);
+  }, []);
 
-  const showPdf = (pdf) =>{
-    window.open(`${import.meta.env.VITE_BASE_URL}/uploads/${pdf}`,"_blank","noreferrer")
-  }
+  useEffect(() => {
+    const filtered = allPdfs.filter((pdf) =>
+      pdf.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredPdfs(filtered);
+  }, [searchTerm, allPdfs]);
 
+  const showPdf = (pdf) => {
+    window.open(
+      `${import.meta.env.VITE_BASE_URL}/uploads/${pdf}`,
+      "_blank",
+      "noreferrer"
+    );
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -50,6 +67,8 @@ export default function Upload() {
       console.log(response.data);
       toast.dismiss(loading);
       toast.success("File uploaded successfully.");
+      setFile(null);
+      setTitle("");
     } catch (error) {
       console.error("Error uploading file:", error);
       toast.dismiss(loading);
@@ -79,7 +98,8 @@ export default function Upload() {
           <div className="mb-4">
             <input
               type="text"
-              placeholder="enter title"
+              placeholder="Enter title"
+              value={title}
               className="border-2 w-full p-1 mb-2"
               onChange={(e) => {
                 setTitle(e.target.value);
@@ -117,6 +137,8 @@ export default function Upload() {
           type="text"
           id="search-bar"
           placeholder="Search documents..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full sm:w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
@@ -140,9 +162,8 @@ export default function Upload() {
               </tr>
             </thead>
             <tbody id="document-rows">
-              {/* Example row */}
-              {
-                allPdfs.map((e) => (
+              {filteredPdfs.length > 0 ? (
+                filteredPdfs.map((e) => (
                   <tr key={e._id}>
                     <td className="py-2 px-4 text-sm">{e.title}</td>
                     <td className="py-2 px-4 text-sm">{e.type}</td>
@@ -151,17 +172,21 @@ export default function Upload() {
                       <button
                         className="px-2 py-1 text-sm font-medium text-gray-800 bg-white border border-gray-300 rounded-md hover:bg-gray-100 hover:text-gray-800"
                         onClick={() => {
-                          showPdf(e.pdf)
+                          showPdf(e.pdf);
                         }}
                       >
-                        Show Pdf
+                        Show {e.type}
                       </button>
                     </td>
                   </tr>
                 ))
-              }
-
-              {/* Add more rows dynamically */}
+              ) : (
+                <tr>
+                  <td colSpan="4" className="text-center py-4 text-gray-600">
+                    No documents found.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
