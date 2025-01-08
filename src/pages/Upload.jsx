@@ -23,7 +23,7 @@ export default function Upload() {
       }
     };
     getAllPdfs();
-  }, []);
+  }, [allPdfs,title,file]);
 
   useEffect(() => {
     const filtered = allPdfs.filter((pdf) =>
