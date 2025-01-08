@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import {UploadPage} from "./index.js"
+import {UploadPage, Home, Profile, Dashboard} from "./index.js"
 import { Routes, Route } from "react-router-dom";
 import Qrcode from "./components/Qrcode";
 import Navbar from "./components/Navbar";
@@ -12,7 +12,10 @@ function App() {
 			<Navbar />
       <Toaster/>
 			<Routes>
-				<Route path="/" element={< UploadPage />} />
+				<Route path="/" element={< Home />} />
+				<Route path="/upload" element={< UploadPage />} />
+				<Route path="/profile" element={< Profile />} />
+				<Route path="/dashboard" element={< Dashboard />} />
 			</Routes>
 		</>
 	);

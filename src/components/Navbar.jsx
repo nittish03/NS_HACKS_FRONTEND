@@ -12,7 +12,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <img
               className="h-8 w-auto"
-              src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
+              src="public/vite.svg"
               alt="Your Company"
             />
           </div>
@@ -26,10 +26,10 @@ const Navbar = () => {
               Home
             </NavLink>
             <NavLink
-              to="/2"
+              to="/dashboard"
               className="rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-gray-700 hover:transition hover:duration-200"
             >
-              Second
+              Dashboard
             </NavLink>
           </div>
 
@@ -97,11 +97,15 @@ const Navbar = () => {
                 />
               </svg>
             </button>
-            <img
-              className="h-8 w-8 rounded-full"
-              src="https://avatars.githubusercontent.com/u/137718877?s=400&u=059ef6bb2f532986f496f6ac7dbe45bfbfe4e04e&v=4"
-              alt="User"
-            />
+            <NavLink
+              to="/profile"
+            >
+              <img
+                className="h-8 w-8 rounded-full"
+                src="https://avatars.githubusercontent.com/u/137718877?s=400&u=059ef6bb2f532986f496f6ac7dbe45bfbfe4e04e&v=4"
+                alt="User"
+                />
+              </NavLink>
           </div>
         </div>
       </div>
@@ -121,10 +125,10 @@ const Navbar = () => {
             Home
           </NavLink>
           <NavLink
-            to="/2"
+            to="/dashboard"
             className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-gray-700 hover:transition hover:duration-200"
           >
-            Second
+            Dashboard
           </NavLink>
         </div>
       </div>

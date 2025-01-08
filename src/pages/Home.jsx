@@ -26,7 +26,7 @@ export default function Home() {
 					</h2>
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 						<NavLink
-							to="/uploaDocs"
+							to="/upload"
 							className="p-6 bg-white rounded-lg shadow hover:bg-blue-100 transition"
 						>
 							<h3 className="text-lg font-bold text-gray-800">
