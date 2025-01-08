@@ -102,7 +102,7 @@ const Navbar = () => {
             >
               <img
                 className="h-8 w-8 rounded-full"
-                src="https://avatars.githubusercontent.com/u/137718877?s=400&u=059ef6bb2f532986f496f6ac7dbe45bfbfe4e04e&v=4"
+                src="public/user.jpg"
                 alt="User"
                 />
               </NavLink>
