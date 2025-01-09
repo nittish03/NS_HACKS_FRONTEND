@@ -12,7 +12,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <img
               className="h-8 w-auto"
-              src="public/AlphBotsLogo.png"
+              src="/AlphBotsLogo.png"
               alt="AlphaBots"
             />
           </div>
@@ -102,7 +102,7 @@ const Navbar = () => {
             >
               <img
                 className="h-8 w-8 rounded-full"
-                src="public/user.jpg"
+                src="/user.jpg"
                 alt="User"
                 />
               </NavLink>
