@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import Container from "../components/Container";
+import {Container} from "../index.js"
 
 export default function Home() {
 
@@ -49,7 +49,7 @@ export default function Home() {
 							</p>
 						</NavLink>
 						<NavLink
-							to="#"
+							to="/findDoc"
 							className="p-6 bg-white rounded-lg shadow hover:bg-blue-100 transition"
 						>
 							<h3 className="text-lg font-bold text-gray-800">

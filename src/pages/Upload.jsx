@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {Container} from "../index"
 import toast from "react-hot-toast";
 import axios from "axios";
 
@@ -77,7 +78,7 @@ export default function Upload() {
   };
 
   return (
-    <div className="container mx-auto p-6">
+    <Container>
       {/* Header */}
       <header className="mb-6 text-center sm:text-left">
         <h1 className="text-3xl font-bold text-gray-800">Manage Documents</h1>
@@ -191,6 +192,6 @@ export default function Upload() {
           </table>
         </div>
       </section>
-    </div>
+    </Container>
   );
 }
