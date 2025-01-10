@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {Container} from "../index"
 import toast from "react-hot-toast";
 import axios from "axios";
+import { MdDeleteForever } from "react-icons/md";
 
 export default function Upload() {
   const [file, setFile] = useState(null); // Main
@@ -40,6 +41,20 @@ export default function Upload() {
       "noreferrer"
     );
   };
+
+  const handleDelete = async (pdf) => {
+    const loading = toast.loading("Deleting Document...");
+    try{
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/delete-upload`,{pdf});
+      console.log(response);
+      toast.dismiss(loading);
+      toast.success("Document deleted successfully")
+    }catch(e){
+      console.log(e);
+      toast.dismiss(loading);
+      toast.error("Failed to Delete Document")
+    }
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -166,18 +181,27 @@ export default function Upload() {
               {filteredPdfs.length > 0 ? (
                 filteredPdfs.map((e) => (
                   <tr key={e._id}>
-                    <td className="py-2 px-4 text-sm">{e.title}</td>
-                    <td className="py-2 px-4 text-sm">{e.type}</td>
-                    <td className="py-2 px-4 text-sm">{e.dateUploaded}</td>
+                    <td className="py-2 px-4 text-sm ">{e.title}</td>
+                    <td className="py-2 px-4 text-sm ">{e.type}</td>
+                    <td className="py-2 px-4 text-sm ">{e.dateUploaded}</td>
                     <td className="py-2 px-4 text-sm">
+                      <div className="flex items-center gap-2">
+
+
                       <button
                         className="px-2 py-1 text-sm font-medium text-gray-800 bg-white border border-gray-300 rounded-md hover:bg-gray-100 hover:text-gray-800"
                         onClick={() => {
                           showPdf(e.pdf);
                         }}
-                      >
+                        >
                         Show {e.type}
                       </button>
+                      <MdDeleteForever
+                      onClick={()=>{
+                        handleDelete(e._id)
+                      }}
+                      className="w-5 h-5 hover:cursor-pointer text-red-600"/>
+                        </div>
                     </td>
                   </tr>
                 ))
