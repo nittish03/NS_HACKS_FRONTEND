@@ -3,14 +3,19 @@ import {Container} from "../index"
 import toast from "react-hot-toast";
 import axios from "axios";
 import { MdDeleteForever } from "react-icons/md";
+import { useNavigate } from 'react-router-dom';
 
 export default function Upload() {
   const [file, setFile] = useState(null); // Main
   const [title, setTitle] = useState("");
-  const [password, setPassword] = useState("");
+  // const [password, setPassword] = useState("");
   const [allPdfs, setAllPdfs] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // For search functionality
   const [filteredPdfs, setFilteredPdfs] = useState([]);
+  const [result, setResult] = useState("")
+  const [validity, setValidity] = useState("")
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const getAllPdfs = async () => {
@@ -43,19 +48,7 @@ export default function Upload() {
     );
   };
 
-  const handleDelete = async (pdf) => {
-    const loading = toast.loading("Deleting Document...");
-    try{
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/delete-upload`,{pdf});
-      console.log(response);
-      toast.dismiss(loading);
-      toast.success("Document deleted successfully")
-    }catch(e){
-      console.log(e);
-      toast.dismiss(loading);
-      toast.error("Failed to Delete Document")
-    }
-  }
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -68,7 +61,7 @@ export default function Upload() {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("title", title);
-    formData.append("password", password);
+    // formData.append("password", password);
 
     const loading = toast.loading("Uploading...");
     try {
@@ -82,7 +75,7 @@ export default function Upload() {
         }
       );
 
-      console.log(response.data);
+      console.log(response);
       toast.dismiss(loading);
       toast.success("File uploaded successfully.");
       setFile(null);
@@ -93,6 +86,48 @@ export default function Upload() {
       toast.error("Error uploading file.");
     }
   };
+
+  const handleDelete = async (pdf) => {
+    const loading = toast.loading("Deleting Document...");
+    try{
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/delete-upload`,{pdf});
+      console.log(response);
+      toast.dismiss(loading);
+      toast.success("Document deleted successfully")
+    }catch(e){
+      console.log(e);
+      toast.dismiss(loading);
+      toast.error("Failed to Delete Document")
+    }
+  }
+  const handleValidity = async (id) =>{
+    const loading = toast.loading("Checking validity...");
+    try{
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/get-single-upload`, { id });
+      setResult(response.data.data.result)
+
+
+
+      const aiResponse = await axios({
+        url:`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`,
+        method:"post",
+        data: 
+        {contents:[{parts:[{"text":`Tell me whether if the invoice is valid or not according to the invoice data i am providing you and why, INVOICE DATA :  ${response.data.data.result}`}]}]}
+      })
+
+      setValidity(aiResponse.data.candidates[0].content.parts[0].text)
+
+      toast.dismiss(loading);
+      toast.success("Validity Check Done");
+
+      navigate('/report', {state: {result: aiResponse.data.candidates[0].content.parts[0].text},});
+      
+    }catch(e){
+      console.log(e)
+      toast.dismiss(loading);
+    }
+  }
+
 
   return (
     <Container>
@@ -125,7 +160,7 @@ export default function Upload() {
               }}
             />
             <br />
-            Password : -
+            {/* Password : -
             <input
               type="text"
               placeholder="Enter password"
@@ -134,7 +169,7 @@ export default function Upload() {
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
-            />
+            /> */}
             <label
               htmlFor="file"
               className="block text-gray-700 font-medium mb-2"
@@ -214,7 +249,16 @@ export default function Upload() {
                       onClick={()=>{
                         handleDelete(e._id)
                       }}
-                      className="w-5 h-5 hover:cursor-pointer text-red-600"/>
+                      className="w-5 h-5 hover:cursor-pointer text-red-600"
+                      />
+                      <button
+                      className="px-2 py-1 text-sm font-medium text-gray-800 bg-white border border-gray-300 rounded-md hover:bg-gray-100 hover:text-gray-800"
+                      onClick={() => {
+                        handleValidity(e._id)
+                      }}
+                      >
+                      Check validity
+                    </button>
                         </div>
                     </td>
                   </tr>

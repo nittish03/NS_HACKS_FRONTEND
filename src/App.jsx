@@ -22,7 +22,7 @@ function App() {
 				<Route path="/profile" element={<Profile />} />
 				<Route path="/dashboard" element={<Dashboard />} />
 				<Route path="/findDoc" element={<FindDoc />} />
-				<Route path="/report/:url" element={<Report />} />
+				<Route path="/report" element={<Report />} />
 			</Routes>
 		</>
 	);

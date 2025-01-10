@@ -5,9 +5,9 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-gray-800">
+    <nav className="bg-gray-800 sticky top-0 shadow-md">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-14 items-center justify-between">
           {/* Logo Section */}
           <div className="flex items-center">
             <img
