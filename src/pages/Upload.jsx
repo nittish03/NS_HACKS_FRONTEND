@@ -7,6 +7,7 @@ import { MdDeleteForever } from "react-icons/md";
 export default function Upload() {
   const [file, setFile] = useState(null); // Main
   const [title, setTitle] = useState("");
+  const [password, setPassword] = useState("");
   const [allPdfs, setAllPdfs] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // For search functionality
   const [filteredPdfs, setFilteredPdfs] = useState([]);
@@ -67,6 +68,7 @@ export default function Upload() {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("title", title);
+    formData.append("password", password);
 
     const loading = toast.loading("Uploading...");
     try {
@@ -111,7 +113,8 @@ export default function Upload() {
           onSubmit={handleSubmit}
           className="p-6 bg-white rounded-lg shadow-md max-w-lg mx-auto"
         >
-          <div className="mb-4">
+          <div className="mb-4 text-xl">
+            Title : -
             <input
               type="text"
               placeholder="Enter title"
@@ -119,6 +122,17 @@ export default function Upload() {
               className="border-2 w-full p-1 mb-2"
               onChange={(e) => {
                 setTitle(e.target.value);
+              }}
+            />
+            <br />
+            Password : -
+            <input
+              type="text"
+              placeholder="Enter password"
+              value={password}
+              className="border-2 w-full p-1 mb-2"
+              onChange={(e) => {
+                setPassword(e.target.value);
               }}
             />
             <label
