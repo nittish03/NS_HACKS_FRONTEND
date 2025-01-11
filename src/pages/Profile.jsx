@@ -1,4 +1,7 @@
+import React,{useState,useEffect} from "react"
 export default function Profile() {
+	const [username,setUsername] = useState("John Doe");
+	const [email,setEmail] = useState("JohnDoe")
 	return (
 		<>
 			<div className="container mx-auto p-6">
@@ -17,7 +20,7 @@ export default function Profile() {
 						<div>
 							<img
 								id="profile-pic"
-								src="public/user.jpg"
+								src="/user.jpg"
 								alt="Profile Picture"
 								className="w-24 h-24 rounded-full object-cover"
 							/>
@@ -62,7 +65,10 @@ export default function Profile() {
 								type="text"
 								id="edit-name"
 								className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-								value="John Doe"
+								value={username}
+								onChange={(e)=>{
+									setUsername(e.target.value);
+								}}
 							/>
 						</div>
 						{/* <!-- Email --> */}
@@ -74,7 +80,10 @@ export default function Profile() {
 								type="email"
 								id="edit-email"
 								className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-								value="johndoe@example.com"
+								value={email}
+								onChange={(e)=>{
+									setEmail(e.target.value);
+								}}
 							/>
 						</div>
 						<button
