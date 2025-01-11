@@ -35,7 +35,7 @@ const PasswordInputPage = ({ realPassword, onSuccess, onClose }) => {
 				<h2 className="text-xl font-semibold mb-4 text-center">
 					Enter Password
 				</h2>
-				<form onSubmit={handleSubmit} className="space-y-4">
+				<form onSubmit={handleSubmit()} className="space-y-4">
 					<input
 						type="password"
 						placeholder="Enter password"

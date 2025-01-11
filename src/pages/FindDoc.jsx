@@ -78,6 +78,7 @@ export default function FindDoc() {
 													onClick={() => {
 														setSuccessFunction("open");
 														setCheckPassword(true);
+														
 														// window.open(
 														// 	`${import.meta.env.VITE_BASE_URL}/uploads/${
 														// 		e.pdf
