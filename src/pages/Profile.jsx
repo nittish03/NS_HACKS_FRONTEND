@@ -2,8 +2,8 @@ import React, { useState } from "react";
 
 export default function Profile() {
   const [profile, setProfile] = useState({
-    username: "John Doe",
-    email: "JohnDoe",
+    username: "AlphaBots",
+    email: "AlphaBots@gmail.com",
     profilePic: "/user.jpg",
   });
 
