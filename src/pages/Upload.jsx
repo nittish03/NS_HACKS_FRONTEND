@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 export default function Upload() {
 	const [file, setFile] = useState(null); // Main
 	const [title, setTitle] = useState("");
-	const [password, setPassword] = useState("");
+	// const [password, setPassword] = useState("");
 	const [allPdfs, setAllPdfs] = useState([]);
 	const [searchTerm, setSearchTerm] = useState(""); // For search functionality
 	const [filteredPdfs, setFilteredPdfs] = useState([]);
@@ -39,7 +39,7 @@ export default function Upload() {
 		setFilteredPdfs(filtered);
 	}, [searchTerm, allPdfs]);
 
-	const showPdf = (pdf, password) => {
+	const showPdf = (pdf) => {
 		window.open(
 			`${import.meta.env.VITE_BASE_URL}/uploads/${pdf}`,
 			"_blank",
@@ -58,7 +58,7 @@ export default function Upload() {
 		const formData = new FormData();
 		formData.append("file", file);
 		formData.append("title", title);
-		formData.append("password", password);
+		// formData.append("password", password);
 
 		const loading = toast.loading("Uploading...");
 		try {
@@ -77,7 +77,7 @@ export default function Upload() {
 			toast.success("File uploaded successfully.");
 			setFile(null);
 			setTitle("");
-			setPassword("");
+			// setPassword("");
 		} catch (error) {
 			console.error("Error uploading file:", error);
 			toast.dismiss(loading);
@@ -173,7 +173,7 @@ export default function Upload() {
 							}}
 						/>
 						<br />
-						Password : -
+						{/* Password : -
 						<input
 							type="text"
 							placeholder="Enter password"
@@ -182,7 +182,7 @@ export default function Upload() {
 							onChange={(e) => {
 								setPassword(e.target.value);
 							}}
-						/>
+						/> */}
 						<label
 							htmlFor="file"
 							className="block text-gray-700 font-medium mb-2"
