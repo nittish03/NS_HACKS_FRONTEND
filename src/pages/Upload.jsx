@@ -251,7 +251,7 @@ export default function Upload() {
 												<button
 													className="px-2 py-1 text-sm font-medium text-gray-800 bg-white border border-gray-300 rounded-md hover:bg-gray-100 hover:text-gray-800"
 													onClick={() => {
-														showPdf(e.pdf, e.password);
+														showPdf(e.pdf);
 													}}
 												>
 													Show {e.type}
