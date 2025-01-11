@@ -1,46 +1,49 @@
 import React, { useEffect, useState } from "react";
-import {Container} from "../index"
+import { Container } from "../index";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { MdDeleteForever } from "react-icons/md";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import PasswordInputPage from "../components/Password.jsx";
 
 export default function Upload() {
-  const [file, setFile] = useState(null); // Main
-  const [title, setTitle] = useState("");
-  const [password, setPassword] = useState("");
-  const [allPdfs, setAllPdfs] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // For search functionality
-  const [filteredPdfs, setFilteredPdfs] = useState([]);
-  const [result, setResult] = useState("")
-  const [validity, setValidity] = useState("")
-  const navigate = useNavigate();
+	const [file, setFile] = useState(null); // Main
+	const [title, setTitle] = useState("");
+	// const [password, setPassword] = useState("");
+	const [allPdfs, setAllPdfs] = useState([]);
+	const [searchTerm, setSearchTerm] = useState(""); // For search functionality
+	const [filteredPdfs, setFilteredPdfs] = useState([]);
+	const [result, setResult] = useState("");
+	const [validity, setValidity] = useState("");
+	const navigate = useNavigate();
 
+	const [successFunction, setSuccessFunction] = useState("");
+	const [checkPassword, setCheckPassword] = useState(false);
 
-  useEffect(() => {
-    const getAllPdfs = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/get-uploads`
-        );
-        setAllPdfs(response.data.data);
-        setFilteredPdfs(response.data.data);
-      } catch (error) {
-        console.error("Error fetching PDFs:", error);
-        toast.error("Failed to fetch documents.");
-      }
-    };
-    getAllPdfs();
-  }, [allPdfs,title,file]);
-	
-  useEffect(() => {
-    const filtered = allPdfs.filter((pdf) =>
-      pdf.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredPdfs(filtered);
-  }, [searchTerm, allPdfs]);
+	useEffect(() => {
+		const getAllPdfs = async () => {
+			try {
+				const response = await axios.get(
+					`${import.meta.env.VITE_BASE_URL}/get-uploads`
+				);
+				setAllPdfs(response.data.data);
+				setFilteredPdfs(response.data.data);
+			} catch (error) {
+				console.error("Error fetching PDFs:", error);
+				toast.error("Failed to fetch documents.");
+			}
+		};
+		getAllPdfs();
+	}, [allPdfs, title, file]);
 
-  const showPdf = (pdf,password) => {
+	useEffect(() => {
+		const filtered = allPdfs.filter((pdf) =>
+			pdf.title.toLowerCase().includes(searchTerm.toLowerCase())
+		);
+		setFilteredPdfs(filtered);
+	}, [searchTerm, allPdfs]);
+
+  const showPdf = (pdf) => {
     window.open(
       `${import.meta.env.VITE_BASE_URL}/uploads/${pdf}`,
       "_blank",
@@ -50,37 +53,36 @@ export default function Upload() {
 
 
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+	const handleSubmit = async (event) => {
+		event.preventDefault();
 
-    if (!file) {
-      toast.error("Please select a file to upload.");
-      return;
-    }
+		if (!file) {
+			toast.error("Please select a file to upload.");
+			return;
+		}
 
     const formData = new FormData();
     formData.append("file", file);
     formData.append("title", title);
-    formData.append("password", password);
+    // formData.append("password", password);
 
-    const loading = toast.loading("Uploading...");
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/upload`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+		const loading = toast.loading("Uploading...");
+		try {
+			const response = await axios.post(
+				`${import.meta.env.VITE_BASE_URL}/upload`,
+				formData,
+				{
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
+				}
+			);
 
       console.log(response);
       toast.dismiss(loading);
       toast.success("File uploaded successfully.");
       setFile(null);
       setTitle("");
-      setPassword("")
     } catch (error) {
       console.error("Error uploading file:", error);
       toast.dismiss(loading);
@@ -88,7 +90,7 @@ export default function Upload() {
     }
   };
 
-  const handleDelete = async (pdf,password) => {
+  const handleDelete = async (pdf) => {
     const loading = toast.loading("Deleting Document...");
     try{
       const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/delete-upload`,{pdf});
@@ -109,36 +111,47 @@ export default function Upload() {
 
 
 
-      const aiResponse = await axios({
-        url:`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`,
-        method:"post",
-        data: 
-        {contents:[{parts:[{"text":`Tell me whether if the invoice is valid or not according to the invoice data i am providing you and why, INVOICE DATA :  ${response.data.data.result}`}]}]}
-      })
+			const aiResponse = await axios({
+				url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${
+					import.meta.env.VITE_GEMINI_API_KEY
+				}`,
+				method: "post",
+				data: {
+					contents: [
+						{
+							parts: [
+								{
+									text: `Tell me whether if the invoice is valid or not according to the invoice data i am providing you and why, INVOICE DATA :  ${response.data.data.result}`,
+								},
+							],
+						},
+					],
+				},
+			});
 
-      setValidity(aiResponse.data.candidates[0].content.parts[0].text)
+			setValidity(aiResponse.data.candidates[0].content.parts[0].text);
 
-      toast.dismiss(loading);
-      toast.success("Validity Check Done");
+			toast.dismiss(loading);
+			toast.success("Validity Check Done");
 
-      navigate('/report', {state: {result: aiResponse.data.candidates[0].content.parts[0].text},});
-      
-    }catch(e){
-      console.log(e)
-      toast.dismiss(loading);
-    }
-  }
+			navigate("/report", {
+				state: { result: aiResponse.data.candidates[0].content.parts[0].text },
+			});
+		} catch (e) {
+			console.log(e);
+			toast.dismiss(loading);
+		}
+	};
 
-
-  return (
-    <Container>
-      {/* Header */}
-      <header className="mb-6 text-center sm:text-left">
-        <h1 className="text-3xl font-bold text-gray-800">Manage Documents</h1>
-        <p className="text-gray-600">
-          Upload, view, and manage your documents in one place...
-        </p>
-      </header>
+	return (
+		<Container>
+			{/* Header */}
+			<header className="mb-6 text-center sm:text-left">
+				<h1 className="text-3xl font-bold text-gray-800">Manage Documents</h1>
+				<p className="text-gray-600">
+					Upload, view, and manage your documents in one place...
+				</p>
+			</header>
 
       {/* Upload Section */}
       <section className="bg-white p-6 rounded-lg shadow mb-8">
@@ -161,7 +174,7 @@ export default function Upload() {
               }}
             />
             <br />
-            Password : -
+            {/* Password : -
             <input
               type="text"
               placeholder="Enter password"
@@ -170,7 +183,7 @@ export default function Upload() {
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
-            />
+            /> */}
             <label
               htmlFor="file"
               className="block text-gray-700 font-medium mb-2"
@@ -197,17 +210,17 @@ export default function Upload() {
         </form>
       </section>
 
-      {/* Search Bar */}
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-4 sm:space-y-0">
-        <input
-          type="text"
-          id="search-bar"
-          placeholder="Search documents..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full sm:w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
+			{/* Search Bar */}
+			<div className="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-4 sm:space-y-0">
+				<input
+					type="text"
+					id="search-bar"
+					placeholder="Search documents..."
+					value={searchTerm}
+					onChange={(e) => setSearchTerm(e.target.value)}
+					className="w-full sm:w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+				/>
+			</div>
 
       {/* Documents List */}
       <section>
@@ -241,14 +254,14 @@ export default function Upload() {
                       <button
                         className="px-2 py-1 text-sm font-medium text-gray-800 bg-white border border-gray-300 rounded-md hover:bg-gray-100 hover:text-gray-800"
                         onClick={() => {
-                          showPdf(e.pdf,e.password);
+                          showPdf(e.pdf);
                         }}
                         >
                         Show {e.type}
                       </button>
                       <MdDeleteForever
                       onClick={()=>{
-                        handleDelete(e._id,e.password)
+                        handleDelete(e._id)
                       }}
                       className="w-5 h-5 hover:cursor-pointer text-red-600"
                       />
