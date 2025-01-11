@@ -37,7 +37,7 @@ export default function Home() {
 								Quickly upload and process your invoices.
 							</p>
 						</NavLink>
-						<NavLink
+						{/* <NavLink
 							to="/"
 							className="p-6 bg-white rounded-lg shadow hover:bg-blue-100 transition"
 						>
@@ -47,7 +47,7 @@ export default function Home() {
 							<p className="text-gray-600 mt-2">
 								Access all your uploaded documents.
 							</p>
-						</NavLink>
+						</NavLink> */}
 						<NavLink
 							to="/findDoc"
 							className="p-6 bg-white rounded-lg shadow hover:bg-blue-100 transition"
