@@ -85,7 +85,7 @@ export default function Upload() {
 		}
 	};
 
-	const handleDelete = async (pdf, password) => {
+	const handleDelete = async (pdf) => {
 		const loading = toast.loading("Deleting Document...");
 		try {
 			const response = await axios.post(
@@ -258,7 +258,7 @@ export default function Upload() {
 												</button>
 												<MdDeleteForever
 													onClick={() => {
-														handleDelete(e._id, e.password);
+														handleDelete(e._id);
 													}}
 													className="w-5 h-5 hover:cursor-pointer text-red-600"
 												/>
