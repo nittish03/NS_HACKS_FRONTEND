@@ -1,23 +1,72 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import axios from "axios";
 
-const PasswordInputPage = ({ realPassword, onSuccess, onClose }) => {
+const PasswordInputPage = ({ realPassword, onSuccess, onClose , file, fileId}) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState("");
+  const [validity, setValidity] = useState("");
 
   const navigate = useNavigate();
 
+  const handleValidity = async (id) => {
+		const loading = toast.loading("Checking validity...");
+		try {
+			const response = await axios.post(
+				`${import.meta.env.VITE_BASE_URL}/get-single-upload`,
+				{ id }
+			);
+			setResult(response.data.data.result);
+
+			const aiResponse = await axios({
+				url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${
+					import.meta.env.VITE_GEMINI_API_KEY
+				}`,
+				method: "post",
+				data: {
+					contents: [
+						{
+							parts: [
+								{
+									text: `Tell me whether if the invoice is valid or not according to the invoice data i am providing you and why, INVOICE DATA :  ${response.data.data.result}`,
+								},
+							],
+						},
+					],
+				},
+			});
+
+			setValidity(aiResponse.data.candidates[0].content.parts[0].text);
+
+			toast.dismiss(loading);
+			toast.success("Validity Check Done");
+
+			navigate("/report", {
+				state: {
+					result: aiResponse.data.candidates[0].content.parts[0].text,
+				},
+			});
+		} catch (e) {
+			console.log(e);
+			toast.dismiss(loading);
+		}
+	};
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault();		
     setLoading(true);
     setError("");
-
+	console.log(realPassword, password);
     try {
       if (password === realPassword) {
 
-        if(onSuccess === "navigate")    navigate(`/report/${e.pdf}`);
-        else if(onSuccess === "open")   window.open(`${import.meta.env.VITE_BASE_URL}/uploads/${e.pdf}`, "_blank");
+        if(onSuccess === "navigate"){
+			handleValidity(fileId);
+		}
+        else if(onSuccess === "open")   window.open(`${import.meta.env.VITE_BASE_URL}/uploads/${file}`, "_blank");
         
       } else {
         setError("Incorrect password. Please try again.");
@@ -35,9 +84,9 @@ const PasswordInputPage = ({ realPassword, onSuccess, onClose }) => {
 				<h2 className="text-xl font-semibold mb-4 text-center">
 					Enter Password
 				</h2>
-				<form onSubmit={handleSubmit()} className="space-y-4">
+				<form onSubmit={handleSubmit} className="space-y-4">
 					<input
-						type="password"
+						type="text"
 						placeholder="Enter password"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}

@@ -67,7 +67,9 @@ export default function FindDoc() {
 						<tbody id="document-rows">
 							{filteredPdfs.length > 0 && fileName ? (
 								filteredPdfs.map((e) => (
+									
 									<tr key={e._id}>
+										<td>{e.password}</td>
 										<td className="py-2 px-4 text-sm">{e.title}</td>
 										<td className="py-2 px-4 text-sm">{e.type}</td>
 										<td className="py-2 px-4 text-sm">{e.dateUploaded}</td>
@@ -101,11 +103,17 @@ export default function FindDoc() {
 												</button>
 											</div>
 											{ checkPassword && (<PasswordInputPage
-											// realPassword={e.password}
-											realPassword="Baka"
+
+											
+											realPassword={e.password}
+											// realPassword="Baka"
 											onSuccess = {successFunction}
 											onClose={() => setCheckPassword(false)}
-											/>) }
+											file = {e.pdf}
+											fileId = {e._id}
+											/>)
+											
+										}
 										</td>
 									</tr>
 								))
